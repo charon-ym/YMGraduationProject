@@ -1,0 +1,274 @@
+<template>
+  <div>
+    <div class="container" :style='{"minHeight":"100vh","padding":"210px 0 210px","alignItems":"center","background":"url(http://codegen.caihongy.cn/20230215/d4dc8ceea34b422aa24289ba152f557b.png) no-repeat center top / 100% auto,url(http://codegen.caihongy.cn/20230214/c40bf62556ca43b7a29ed0b2e8d23a68.png) no-repeat center bottom,#fff","display":"block","width":"100%","justifyContent":"center"}'>
+
+      <el-form :style='{"border":"10px solid #f4ca93","padding":"0 0 0px","margin":"0px auto 0px","borderRadius":"0px","background":"#fff","width":"800px","position":"relative","height":"auto"}'>
+        <div v-if="true" :style='{"margin":"40px auto 40px","color":"#fff","textAlign":"center","background":"url(http://codegen.caihongy.cn/20230215/84a340a9e2e2435cbca947c7ccd12820.png) no-repeat left top / auto 100%,linear-gradient(120deg, rgba(238,149,42,1) 0%, rgba(205,55,10,1) 100%)","width":"86%","lineHeight":"44px","fontSize":"16px"}' class="title-container">高校党建基本数据管理系统的设计与实现登录</div>
+        <div v-if="loginType==1" class="list-item" :style='{"width":"80%","margin":"0 auto 30px","alignItems":"center","flexWrap":"wrap","display":"flex"}'>
+          <div v-if="false" class="lable" :style='{"width":"64px","lineHeight":"44px","fontSize":"14px","color":"rgba(64, 158, 255, 1)"}'>用户名：</div>
+          <input :style='{"padding":"0 10px","borderColor":"#edeef0","color":"#999","borderRadius":"0px","borderWidth":"0 0 1px","background":"none","width":"100%","fontSize":"14px","borderStyle":"solid","height":"44px"}' placeholder="请输入用户名" name="username" type="text" v-model="rulesForm.username">
+        </div>
+        <div v-if="loginType==1" class="list-item" :style='{"width":"80%","margin":"0 auto 30px","alignItems":"center","flexWrap":"wrap","display":"flex"}'>
+          <div v-if="false" class="lable" :style='{"width":"64px","lineHeight":"44px","fontSize":"14px","color":"rgba(64, 158, 255, 1)"}'>密码：</div>
+          <input :style='{"padding":"0 10px","borderColor":"#edeef0","color":"#999","borderRadius":"0px","borderWidth":"0 0 1px","background":"none","width":"100%","fontSize":"14px","borderStyle":"solid","height":"44px"}' placeholder="请输入密码" name="password" type="password" v-model="rulesForm.password">
+        </div>
+<!-- 随机验证码模块 -->
+        <div v-if="loginType==1" class="list-item" :style='{"width":"80%","margin":"0 auto 30px","alignItems":"center","flexWrap":"wrap","display":"flex"}'>
+        <input
+          :style='{"padding":"0 10px","borderColor":"#edeef0","color":"#999","borderRadius":"0px","borderWidth":"0 0 1px","background":"none","width":"60%","fontSize":"14px","borderStyle":"solid","height":"44px"}'
+          placeholder="请输入验证码"
+          v-model="rulesForm.randCode"
+          type="text"
+        >
+        <div :style='{"marginLeft":"10px","fontSize":"40px","color":"#333","height":"60px","lineHeight":"60px","cursor":"pointer"}' @click="getRandCode()">
+          <span v-for="(item, index) in codes" :key="index" :style="{color: item.color, transform: item.rotate, fontSize: item.size, display: 'inline-block'}">
+            {{item.num}}
+          </span>
+        </div>
+      </div>
+
+
+
+        <div :style='{"width":"80%","margin":"30px auto"}' v-if="roles.length>1" prop="loginInRole" class="list-type">
+          <el-radio v-for="item in roles" v-bind:key="item.roleName" v-model="rulesForm.role" :label="item.roleName">{{item.roleName}}</el-radio>
+        </div>
+        <div :style='{"width":"auto","margin":"40px 0 0 0px","alignItems":"left","flexWrap":"wrap","justifyContent":"center","display":"flex"}'>
+          <el-button v-if="loginType==1" :style='{"border":"0px solid #f4ca93","cursor":"pointer","padding":"0 10px","margin":"0 5px","color":"#fff","bottom":"50%","minWidth":"200px","right":"-230px","outline":"none","borderRadius":"0px","background":"url(http://codegen.caihongy.cn/20230215/f3cc6b6274624f66a5a14667d6f68181.png) no-repeat center top / 100% 100%,#fe9000","width":"auto","fontSize":"16px","position":"absolute","height":"44px"}' type="primary" @click="login()" class="loginInBt">登录</el-button>
+          <el-button :style='{"border":"0px solid #4a74bc","cursor":"pointer","padding":"0 10px","margin":"0 4px 8px","outline":"none","color":"#333","borderRadius":"0px","background":"rgba(255,255,255,0)","width":"auto","fontSize":"14px","height":"44px"}' type="primary" @click="register('xuesheng')" class="register">注册学生</el-button>
+          <el-button :style='{"border":"0px solid #4a74bc","cursor":"pointer","padding":"0 10px","margin":"0 4px 8px","outline":"none","color":"#333","borderRadius":"0px","background":"rgba(255,255,255,0)","width":"auto","fontSize":"14px","height":"44px"}' type="primary" @click="register('jiaogong')" class="register">注册教工</el-button>
+          <el-button :style='{"border":"0px solid #4a74bc","cursor":"pointer","padding":"0 10px","margin":"0 4px 8px","outline":"none","color":"#333","borderRadius":"0px","background":"rgba(255,255,255,0)","width":"auto","fontSize":"14px","height":"44px"}' type="primary" @click="register('erjixueyuan')" class="register">注册二级学院</el-button>
+          <!-- <el-button :style='{"border":"0px solid #4a74bc","cursor":"pointer","padding":"0 10px","margin":"0 4px 8px","outline":"none","color":"#333","borderRadius":"0px","background":"rgba(255,255,255,0)","width":"auto","fontSize":"14px","height":"44px"}' type="primary" @click="pay" class="register">交党费</el-button> -->
+        </div>
+      </el-form>
+
+    </div>
+  </div>
+</template>
+<script>
+
+import menu from "@/utils/menu";
+export default {
+  data() {
+    return {
+      baseUrl:this.$base.url,
+      loginType: 1,
+      rulesForm: {
+        username: "",
+        password: "",
+        role: "",
+        code: '',
+        randCode:''
+      },
+      menus: [],
+      roles: [],
+      tableName: "",
+      codes: [{
+        num: 1,
+        color: '#000',
+        rotate: '10deg',
+        size: '16px'
+      },{
+        num: 2,
+        color: '#000',
+        rotate: '10deg',
+        size: '16px'
+      },{
+        num: 3,
+        color: '#000',
+        rotate: '10deg',
+        size: '16px'
+      },{
+        num: 4,
+        color: '#000',
+        rotate: '10deg',
+        size: '16px'
+      }],
+    };
+  },
+  mounted() {
+    let menus = menu.list();
+    this.menus = menus;
+
+    for (let i = 0; i < this.menus.length; i++) {
+      if (this.menus[i].hasBackLogin=='是') {
+        this.roles.push(this.menus[i])
+      }
+    }
+
+  },
+  created() {
+    this.getRandCode()
+  },
+  destroyed() {
+	    },
+  components: {
+  },
+  methods: {
+
+    //注册
+    register(tableName){
+		this.$storage.set("loginTable", tableName);
+        this.$storage.set("pageFlag", "register");
+		this.$router.push({path:'/register'})
+    },
+    pay(){
+      // this.$storage.set("loginTable", tableName);
+        this.$storage.set("pageFlag", "pay");
+		this.$router.push({path:'/pay'})
+    },
+    // 登陆
+    login() {
+
+		if (!this.rulesForm.username) {
+			this.$message.error("请输入用户名");
+			return;
+		}
+		if (!this.rulesForm.password) {
+			this.$message.error("请输入密码");
+			return;
+		}
+    if (!this.rulesForm.randCode) {
+      this.$message.error("请输入验证码");
+      return;
+    }
+		if(this.roles.length>1) {
+			if (!this.rulesForm.role) {
+				this.$message.error("请选择角色");
+				return;
+			}
+
+			let menus = this.menus;
+			for (let i = 0; i < menus.length; i++) {
+				if (menus[i].roleName == this.rulesForm.role) {
+					this.tableName = menus[i].tableName;
+				}
+			}
+		} else {
+			this.tableName = this.roles[0].tableName;
+			this.rulesForm.role = this.roles[0].roleName;
+		}
+
+		this.$http({
+			url: `${this.tableName}/login?username=${this.rulesForm.username}&password=${this.rulesForm.password}`,
+			method: "post"
+		}).then(({ data }) => {
+			if (data && data.code === 0) {
+				this.$storage.set("Token", data.token);
+				this.$storage.set("role", this.rulesForm.role);
+				this.$storage.set("sessionTable", this.tableName);
+				this.$storage.set("adminName", this.rulesForm.username);
+				this.$router.replace({ path: "/index/" });
+			} else {
+				this.$message.error(data.msg);
+			}
+		});
+
+
+    // 系统生成的验证码（codes数组里）拼接成字符串
+    let realCode = this.codes.map(item => item.num).join('').toLowerCase();
+    // 用户输入的验证码
+    let inputCode = this.rulesForm.randCode.toLowerCase();
+    if (realCode !== inputCode) {
+      this.$message.error("验证码错误，请重新输入");
+      this.getRandCode(); // 验证码错误时刷新
+      return;
+    }
+
+
+    },
+    getRandCode(len = 4){
+		this.randomString(len)
+    },
+    randomString(len = 4) {
+      let chars = [
+          "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+          "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+          "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G",
+          "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
+          "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2",
+          "3", "4", "5", "6", "7", "8", "9"
+      ]
+      let colors = ["0", "1", "2","3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]
+      let sizes = ['24', '26', '28', '30', '32']
+
+      let output = [];
+      for (let i = 0; i < len; i++) {
+        // 随机验证码
+        let key = Math.floor(Math.random()*chars.length)
+        this.codes[i].num = chars[key]
+        // 随机验证码颜色
+        let code = '#'
+        for (let j = 0; j < 6; j++) {
+          let key = Math.floor(Math.random()*colors.length)
+          code += colors[key]
+        }
+        this.codes[i].color = code
+        // 随机验证码方向
+        let rotate = Math.floor(Math.random()*60)
+        let plus = Math.floor(Math.random()*2)
+        if(plus == 1) rotate = '-'+rotate
+        this.codes[i].rotate = 'rotate('+rotate+'deg)'
+        // 随机验证码字体大小
+        let size = Math.floor(Math.random()*sizes.length)
+        this.codes[i].size = sizes[size]+'px'
+      }
+    },
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.container {
+  min-height: 100vh;
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+      background: url(http://codegen.caihongy.cn/20230215/d4dc8ceea34b422aa24289ba152f557b.png) no-repeat center top / 100% auto,url(http://codegen.caihongy.cn/20230214/c40bf62556ca43b7a29ed0b2e8d23a68.png) no-repeat center bottom,#fff;
+        
+  .list-item ::v-deep .el-input .el-input__inner {
+		border-radius: 0px;
+		padding: 0 10px;
+		color: #999;
+		background: none;
+		width: 100%;
+		font-size: 14px;
+		border-color: #edeef0;
+		border-width: 0 0 1px;
+		border-style: solid;
+		height: 44px;
+	  }
+  
+  .list-code ::v-deep .el-input .el-input__inner {
+  	  	border-radius: 0px;
+  	  	padding: 0 20px;
+  	  	outline: none;
+  	  	margin: 0 20px 0 0;
+  	  	color: #999;
+  	  	background: none;
+  	  	width: calc(100% - 100px);
+  	  	font-size: 14px;
+  	  	border-color: #edeef0;
+  	  	border-width: 0 0 1px;
+  	  	border-style: solid;
+  	  	height: 44px;
+  	  }
+
+  .list-type ::v-deep .el-radio__input .el-radio__inner {
+		background: rgba(53, 53, 53, 0);
+		border-color: #666;
+	  }
+  .list-type ::v-deep .el-radio__input.is-checked .el-radio__inner {
+        background: #fe9000;
+        border-color: #fe9000;
+      }
+  .list-type ::v-deep .el-radio__label {
+		color: #666;
+		font-size: 14px;
+	  }
+  .list-type ::v-deep .el-radio__input.is-checked+.el-radio__label {
+        color: #fe9000;
+        font-size: 14px;
+      }
+}
+</style>

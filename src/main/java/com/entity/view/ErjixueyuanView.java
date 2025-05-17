@@ -1,0 +1,36 @@
+package com.entity.view;
+
+import com.entity.ErjixueyuanEntity;
+
+import com.baomidou.mybatisplus.annotations.TableName;
+import org.apache.commons.beanutils.BeanUtils;
+import java.lang.reflect.InvocationTargetException;
+
+import java.io.Serializable;
+ 
+
+/**
+ * 二级学院
+ * 后端返回视图实体辅助类   
+ * （通常后端关联的表或者自定义的字段需要返回使用）
+ * @author 
+ * @email 
+ * @date 2023-04-13 00:31:03
+ */
+@TableName("erjixueyuan")
+public class ErjixueyuanView  extends ErjixueyuanEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	public ErjixueyuanView(){
+	}
+ 
+ 	public ErjixueyuanView(ErjixueyuanEntity erjixueyuanEntity){
+ 	try {
+			BeanUtils.copyProperties(this, erjixueyuanEntity);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 		
+	}
+}
