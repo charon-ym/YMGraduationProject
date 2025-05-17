@@ -62,12 +62,9 @@
           >
         </template>
       </el-submenu>
-      <!-- 交党费模块 -->
-      <el-submenu
-        v-if="role === '学生' || role === '教工'"
-        :popper-append-to-body="false"
-        index="0"
-      >
+
+      <!-- 个人中心 -->
+      <el-submenu :popper-append-to-body="false" index="1">
         <template slot="title">
           <i
             v-if="true"
@@ -80,7 +77,7 @@
               width: '34px',
               fontSize: '18px',
             }"
-            class="el-icon-menu el-icon-s-home"
+            class="el-icon-menu el-icon-user-solid"
           />
           <span
             :style="{
@@ -88,49 +85,19 @@
               verticalAlign: 'middle',
               fontSize: '14px',
             }"
-            >党费管理</span
+            >个人中心</span
           >
         </template>
-        <el-menu-item index="1-1" @click.native="payPartyDues('')"
-          >缴纳党费</el-menu-item
+        <el-menu-item index="1-1" @click="menuHandler('updatePassword')"
+          >修改密码</el-menu-item
         >
-        <el-menu-item index="1-2" @click="paymentRecord('')"
-          >缴费记录</el-menu-item
+        <el-menu-item index="1-2" @click="menuHandler('center')"
+          >个人信息</el-menu-item
         >
       </el-submenu>
 
       <el-submenu
         v-if="role === '二级学院' || role === '管理员'"
-        :popper-append-to-body="false"
-        index="0"
-        @click.native="transfer('')"
-      >
-        <template slot="title">
-          <i
-            v-if="true"
-            :style="{
-              verticalAlign: 'middle',
-              margin: '0 3px',
-              color: 'inherit',
-              textAlign: 'center',
-              display: 'none',
-              width: '34px',
-              fontSize: '18px',
-            }"
-            class="el-icon-menu el-icon-s-home"
-          />
-          <span
-            :style="{
-              color: 'inherit',
-              verticalAlign: 'middle',
-              fontSize: '14px',
-            }"
-            >关系转接处理</span
-          >
-        </template>
-      </el-submenu>
-
-      <el-submenu
         :popper-append-to-body="false"
         index="10"
       >
@@ -168,37 +135,7 @@
           >
       </el-submenu>
 
-      <el-submenu :popper-append-to-body="false" index="1">
-        <template slot="title">
-          <i
-            v-if="true"
-            :style="{
-              verticalAlign: 'middle',
-              margin: '0 3px',
-              color: 'inherit',
-              textAlign: 'center',
-              display: 'none',
-              width: '34px',
-              fontSize: '18px',
-            }"
-            class="el-icon-menu el-icon-user-solid"
-          />
-          <span
-            :style="{
-              color: 'inherit',
-              verticalAlign: 'middle',
-              fontSize: '14px',
-            }"
-            >个人中心</span
-          >
-        </template>
-        <el-menu-item index="1-1" @click="menuHandler('updatePassword')"
-          >修改密码</el-menu-item
-        >
-        <el-menu-item index="1-2" @click="menuHandler('center')"
-          >个人信息</el-menu-item
-        >
-      </el-submenu>
+      
       <el-submenu
         :popper-append-to-body="false"
         v-for="(menu, index) in menuList.backMenu"
@@ -237,7 +174,7 @@
           >{{ child.menu }}</el-menu-item
         >
       </el-submenu>
-      <el-submenu
+      <!-- <el-submenu
         v-if="role === '二级学院' || role === '管理员'"
         :popper-append-to-body="false"
         index="0"
@@ -266,6 +203,42 @@
             >学习记录</span
           >
         </template>
+      </el-submenu> -->
+       <!-- 交党费模块 -->
+      <el-submenu
+        
+        :popper-append-to-body="false"
+        index="0"
+      >
+        <template slot="title">
+          <i
+            v-if="true"
+            :style="{
+              verticalAlign: 'middle',
+              margin: '0 3px',
+              color: 'inherit',
+              textAlign: 'center',
+              display: 'none',
+              width: '34px',
+              fontSize: '18px',
+            }"
+            class="el-icon-menu el-icon-s-home"
+          />
+          <span
+            :style="{
+              color: 'inherit',
+              verticalAlign: 'middle',
+              fontSize: '14px',
+            }"
+            >党费管理</span
+          >
+        </template>
+        <el-menu-item v-if="role === '学生'|| role === '教工'" index="1-1" @click.native="payPartyDues('')"
+          >缴纳党费</el-menu-item
+        >
+        <el-menu-item index="1-2" @click="paymentRecord('')"
+          >缴费记录</el-menu-item
+        >
       </el-submenu>
     </el-menu>
   </div>
