@@ -64,39 +64,49 @@ export default {
       table: "",
       obj: "",
       ruleForm: {},
+      payForm: {
+          name: "",
+          account: "",
+          type: "",
+          amount: "",
+          ispay: "",
+          payTime: "",
+      },
     };
+  },
+  computed: {
+    // 获取 state
+        count() {
+          return this.$store.state.count
+        },
+    // 获取payRecords
+        // payRecords() {
+        //   return this.$store.state.payRecords
+        // },
+        
   },
   mounted() {
     let table = this.$storage.get("paytable");
     let obj = this.$storage.getObj("payObject");
+    this.role = this.$storage.get("role");
+    console.log(this.role);
+    // 打印payRecords
+    console.log("vuex的使用：");
+    console.log('count:', this.$store.state.count);
     this.table = table;
     this.obj = obj;
 
     var table2 = this.$storage.get("sessionTable");
     this.flag = table2;
-    this.$http({
-      url: `${this.$storage.get("sessionTable")}/session`,
-      method: "get",
-    }).then(({ data }) => {
-      if (data && data.code === 0) {
-        this.ruleForm = data.data;
-      } else {
-        this.$message.error(data.msg);
-      }
-    });
+    
   },
   methods: {
     submitTap() {
+      this.role = this.$storage.get("role");
       console.log(this.ruleForm);
-      console.log(this.name);
-      // if (!this.name) {
-      //   this.$message.error("请输入收款人姓名");
-      //   return;
-      // }
-      // if (!this.account) {
-      //   this.$message.error("请输入收款人账号");
-      //   return;
-      // }
+      // this.payForm = this.ruleForm;
+      console.log("支付成功",new Date());
+
       if (!this.type) {
         this.$message.error("请选择支付方式");
         return;
@@ -107,10 +117,46 @@ export default {
   type: "warning",
 }).then(() => {
   // 用户点击“确定” → 显示支付成功
-  this.$alert("党费缴纳成功", "提示", {
+  this.$alert("党费交纳成功", "提示", {
     confirmButtonText: "确定",
     callback: () => {
-      this.$router.go(-1); // 返回上一页
+      const now = new Date();
+      const formatted = now.toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // 24小时制
+      }).replace(/\//g, '-').replace(/,/, '');
+
+      if(this.role === '学生'){
+          this.payForm = {
+          name: this.ruleForm.xueshengxingming,
+          account: this.ruleForm.xueshengzhanghao,
+          type: this.type,
+          amount: '191',
+          ispay:  "已支付",
+          payTime: formatted,
+        }
+      }
+      console.log(this.role);
+      if(this.role === '教工'){
+        console.log("教工是对的嘛");
+        this.payForm = {
+          name: this.ruleForm.jiaogongxingming,
+          account: this.ruleForm.jiaogongzhanghao,
+          type: this.type,
+          amount: '191',
+          ispay:  "已支付",
+          payTime: formatted,
+        }
+      }
+      console.log(this.payForm);
+      this.$store.commit('addPayRecord', this.payForm);
+
+      console.log("支付成功:",this.$store.state.payRecords);
+      // this.$router.go(-1); // 返回上一页
     },
   });
 }).catch(() => {
@@ -119,42 +165,9 @@ export default {
     cancelButtonText: "取消",
   });
 });
-      // this.$confirm(`确定支付?`, "提示", {
-      //   confirmButtonText: "确定",
-      //   cancelButtonText: "取消",
-      //   type: "warning",
-      // }).then(() => {
-      //   this.obj.ispay = "已支付";
-      //   this.$message({
-      //         message: "支付成功",
-      //         type: "success",
-      //         duration: 1500,
-      //         onClose: () => {
-      //           this.$router.go(-1);
-      //         }
-      //       });
-        // this.$http({
-        //   url: `${this.table}/update`,
-        //   method: "post",
-        //   data: this.obj
-        // }).then(({ data }) => {
-        //   if (data && data.code === 0) {
-        //     this.$message({
-        //       message: "支付成功",
-        //       type: "success",
-        //       duration: 1500,
-        //       onClose: () => {
-        //         this.$router.go(-1);
-        //       }
-        //     });
-        //   } else {
-        //     this.$message.error(data.msg);
-        //   }
-        // });
-      // });
     },
     back() {
-      this.$router.go(-1);
+      // this.$router.go(-1);
     },
   },
 };

@@ -234,10 +234,10 @@
           >
         </template>
         <el-menu-item v-if="role === '学生'|| role === '教工'" index="1-1" @click.native="payPartyDues('')"
-          >缴纳党费</el-menu-item
+          >交纳党费</el-menu-item
         >
         <el-menu-item index="1-2" @click="paymentRecord('')"
-          >缴费记录</el-menu-item
+          >交费记录</el-menu-item
         >
       </el-submenu>
     </el-menu>
@@ -320,7 +320,7 @@ export default {
       });
     }
     this.role = this.$storage.get("role");
-    console.log(this.role);
+    
 
     for (let i = 0; i < this.menuList.length; i++) {
       if (this.menuList[i].roleName == this.role) {
@@ -364,12 +364,12 @@ export default {
     },
     payPartyDues() {
       console.log(this.role);
-      console.log("缴纳党费成功");
+      console.log("交纳党费成功");
       this.$storage.set("pageFlag", "pay");
       this.$router.push({ path: "/pay" });
     },
     paymentRecord() {
-      console.log("你已经缴费");
+      console.log("你已经交费");
       this.$storage.set("pageFlag", "pay");
       this.$router.push({ path: "/payrecord" });
     },

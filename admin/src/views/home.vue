@@ -55,12 +55,32 @@
             }
           }
         },
+
+      computed: {
+      // 获取 state
+        count() {
+          return this.$store.state.count
+        },
+        // 获取 getters
+        doubleCount() {
+          return this.$store.getters.doubleCount
+        },
+      },
       mounted() {
+        
         this.role = this.$storage.get("role");
+        
         this.renderCharts();
+        this.increment();
         
       },
       methods: {
+         // 调用 mutation
+        increment() {
+          console.log("vuex的使用：");
+          console.log("vuex的使用：",this.$store.state.count);
+          this.$store.commit("increment");
+        },
         renderCharts() {
           const studentChart = echarts.init(document.getElementById("xueshengrudangChart1"));
           studentChart.setOption({

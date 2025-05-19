@@ -32,11 +32,11 @@ import huodongPulish from '../views/modules/huodong/huodongPulish.vue';
 //2.配置路由   注意：名字
 const routes = [{
   path: '/index',
-  name: '系统首页',
+  name: '首页',
   component: Index,
   children: [{
     // 这里不设置值，是把main作为默认页面
-    path: '/',
+    path: '/home',
     name: '系统首页',
     component: Home,
     meta: { icon: '', title: 'center' }

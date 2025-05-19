@@ -60,6 +60,8 @@ let sdssds = [{
     ],
          "frontMenu": [], "hasBackLogin": "是", "hasBackRegister": "否", "hasFrontLogin": "否", "hasFrontRegister": "否", "roleName": "管理员", "tableName": "users"},
     
+    { "backMenu": [], "frontMenu": [], "hasBackLogin": "是", "hasBackRegister": "否", "hasFrontLogin": "否", "hasFrontRegister": "否", "roleName": "党支部管理员", "tableName": "users" },
+
     { "backMenu": [
         // { "child": [{ "appFrontIcon": "cuIcon-album", "buttons": ["查看", "学生申请"], "menu": "党组织信息", "menuJump": "列表", "tableName": "dangzuzhixinxi" }], "menu": "党组织信息管理" }, 
         {
@@ -152,6 +154,7 @@ let sdssds = [{
     ], 
         "frontMenu": [], "hasBackLogin": "是", "hasBackRegister": "是", "hasFrontLogin": "否", "hasFrontRegister": "否", "roleName": "教工", "tableName": "jiaogong" }, 
     
+
 
     { "backMenu": [
         { "child": [{ "appFrontIcon": "cuIcon-album", "buttons": ["查看"], "menu": "党组织信息", "menuJump": "列表", "tableName": "dangzuzhixinxi" }], "menu": "党组织信息管理" }, 

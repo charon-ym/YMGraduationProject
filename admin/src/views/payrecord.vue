@@ -1,6 +1,6 @@
 <template>
   <div class="container" :style="{ margin: '0 200px 20px' }">
-    <el-alert title="缴费记录" type="info" :closable="false"></el-alert>
+    <el-alert title="交费记录" type="info" :closable="false"></el-alert>
     <el-table
       :data="records"
       stripe
@@ -39,41 +39,10 @@
 export default {
   data() {
     return {
-      records: [
-        {
-          name: "教工",
-          account: "教工账号1",
-          type: "微信支付",
-          amount: "166",
-          ispay: "已支付",
-          payTime: "2025-01-15 09:16",
-        },
-        {
-          name: "教工",
-          account: "教工账号1",
-          type: "微信支付",
-          amount: "166",
-          ispay: "已支付",
-          payTime: "2025-02-10 14:21",
-        },
-        {
-          name: "教工",
-          account: "教工账号1",
-          type: "微信支付",
-          amount: "166",
-          ispay: "已支付",
-          payTime: "2025-03-13 11:36",
-        },
-        {
-          name: "教工",
-          account: "教工账号1",
-          type: "微信支付",
-          amount: "166",
-          ispay: "已支付",
-          payTime: "2025-04-11 17:21",
-        },
-      ], // 存放缴费记录列表
-      ruleForm:{}
+      records: [], // 存放交费记录列表
+      ruleForm:{},
+      role: "",
+      allRecords: [], // 存放所有交费记录列表
     };
   },
   mounted() {
@@ -92,17 +61,36 @@ export default {
         this.$message.error(data.msg);
       }
     });
+    this.role = this.$storage.get("role");
+    console.log(this.role);
 
     
   },
   methods: {
     loadRecords() {
+      console.log(this.role);
+      this.allRecords = this.$store.state.payRecords;
+      // 获取与当前用户相关的记录
+      if (this.role == "学生") {
+        this.records = this.allRecords.filter((record) => {
+        return record.account === this.ruleForm.xueshengzhanghao
+;
+      });
+      }
+      else if (this.role == "教工") {
+        this.records = this.allRecords.filter((record) => {
+        return record.account === this.ruleForm.jiaogongzhanghao;
+      });
+      }
+      else if (this.role == "管理员" || this.role == "二级学院") {
+        this.records = this.allRecords;
+      }
+      
         console.log(this.ruleForm)
+
       // 这里假设从 paytable 表中获取所有记录
     //   let table = this.$storage.get("paytable") || "paytable"; // 默认值，防止为空
     //   console.log(table);
-    
-      
       //     this.$http({
       //       url: `${table}/list`,
       //       method: "get",
@@ -117,8 +105,9 @@ export default {
       //         this.$message.error(data.msg || "加载记录失败");
       //       }
       //     }).catch(() => {
-      //       this.$message.error("服务器异常，无法加载缴费记录");
+      //       this.$message.error("服务器异常，无法加载交费记录");
       //     });
+
     },
     back() {
       this.$router.go(-1);

@@ -34,6 +34,7 @@
         </div>
         <div :style='{"width":"auto","margin":"40px 0 0 0px","alignItems":"left","flexWrap":"wrap","justifyContent":"center","display":"flex"}'>
           <el-button v-if="loginType==1" :style='{"border":"0px solid #f4ca93","cursor":"pointer","padding":"0 10px","margin":"0 5px","color":"#fff","bottom":"50%","minWidth":"200px","right":"-230px","outline":"none","borderRadius":"0px","background":"url(http://codegen.caihongy.cn/20230215/f3cc6b6274624f66a5a14667d6f68181.png) no-repeat center top / 100% 100%,#fe9000","width":"auto","fontSize":"16px","position":"absolute","height":"44px"}' type="primary" @click="login()" class="loginInBt">登录</el-button>
+          <el-button :style='{"border":"0px solid #4a74bc","cursor":"pointer","padding":"0 10px","margin":"0 4px 8px","outline":"none","color":"#333","borderRadius":"0px","background":"rgba(255,255,255,0)","width":"auto","fontSize":"14px","height":"44px"}' type="primary" @click="register('jiaogong')" class="register">注册党支部管理员</el-button>
           <el-button :style='{"border":"0px solid #4a74bc","cursor":"pointer","padding":"0 10px","margin":"0 4px 8px","outline":"none","color":"#333","borderRadius":"0px","background":"rgba(255,255,255,0)","width":"auto","fontSize":"14px","height":"44px"}' type="primary" @click="register('xuesheng')" class="register">注册学生</el-button>
           <el-button :style='{"border":"0px solid #4a74bc","cursor":"pointer","padding":"0 10px","margin":"0 4px 8px","outline":"none","color":"#333","borderRadius":"0px","background":"rgba(255,255,255,0)","width":"auto","fontSize":"14px","height":"44px"}' type="primary" @click="register('jiaogong')" class="register">注册教工</el-button>
           <el-button :style='{"border":"0px solid #4a74bc","cursor":"pointer","padding":"0 10px","margin":"0 4px 8px","outline":"none","color":"#333","borderRadius":"0px","background":"rgba(255,255,255,0)","width":"auto","fontSize":"14px","height":"44px"}' type="primary" @click="register('erjixueyuan')" class="register">注册二级学院</el-button>
@@ -88,12 +89,14 @@ export default {
   mounted() {
     let menus = menu.list();
     this.menus = menus;
-
+    console.log("menus的长度:",this.menus)
     for (let i = 0; i < this.menus.length; i++) {
       if (this.menus[i].hasBackLogin=='是') {
         this.roles.push(this.menus[i])
       }
+      
     }
+    console.log("roles:",this.roles)
 
   },
   created() {

@@ -14,10 +14,6 @@
 				<el-row :style='{"padding":"30px 0 0","margin":"0 0px 24px","flexWrap":"wrap","background":"linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,230,223,.6) 80%, rgba(205,55,10,.9) 100%)","display":"flex","width":"100%","justifyContent":"center"}'>
 					<el-button :style='{"cursor":"pointer","padding":"0 16px","boxShadow":"1px 2px 4px #91c5da","margin":"0 10px 4px 0","borderColor":"#1098d0","color":"#1098d0","minWidth":"80px","outline":"none","borderRadius":"4px","background":"#fff","borderWidth":"0 0 4px","width":"auto","fontSize":"14px","borderStyle":"solid","height":"40px"}' v-if="isAuth('news','新增')" type="success" @click="addOrUpdateHandler()">新增</el-button>
 					<el-button :style='{"cursor":"pointer","padding":"0 16px","boxShadow":"1px 2px 4px #da9891","margin":"0 10px 0 0","borderColor":"#f07062","color":"#f07062","minWidth":"80px","outline":"none","borderRadius":"4px","background":"#fff","borderWidth":"0 0 4px","width":"auto","fontSize":"14px","borderStyle":"solid","height":"40px"}' v-if="isAuth('news','删除')" :disabled="dataListSelections.length <= 0" type="danger" @click="deleteHandler()">删除</el-button>
-
-
-
-
 				</el-row>
 			</el-form>
 			
@@ -91,6 +87,15 @@ export default {
       searchForm: {
         key: ""
       },
+	  readRecord: {
+          name: "",
+          account: "",
+          type: "",
+          title: "",
+          id: "",
+          studyTime: "",
+          unit:"党总支"
+        },
       form:{},
       dataList: [],
       pageIndex: 1,
@@ -108,6 +113,7 @@ export default {
       chartVisiable4: false,
       chartVisiable5: false,
       addOrUpdateFlag:false,
+	  ruleForm:{},
       layouts: ["total","prev","pager","next","sizes","jumper"],
 
     };
@@ -199,17 +205,42 @@ export default {
     },
     // 添加/修改
     addOrUpdateHandler(title,id,type) {
+		// 获取用户类型
+	  this.role = this.$storage.get("role");
+
 	
 		// 增加阅览次数的后端请求
 	  const now = new Date();
 	  let currentTime = now.toLocaleString(); // 或 now.toISOString() 等格式
 	  let formattedDate = currentTime.replace(/\//g, "-");
-	//   数据中的 题目和id
-	// console.log(title,id)
-	
+	  this.ruleForm = this.$store.state.identitytable
 
-	  
+	  if(this.role == "学生"){
+	      this.readRecord = {
+			name: this.ruleForm.xueshengxingming,
+			account: this.ruleForm.xueshengzhanghao,
+			type: this.role,
+			title: title,
+			id: id,
+			studyTime: formattedDate,
+			unit:"党总支"
+		  };
+	  }
+	  else if(this.role == "教工"){
+		  this.readRecord = {
+			name: this.ruleForm.jiaogongxingming,
+			account: this.ruleForm.jiaogongzhanghao,
+			type: this.role,
+			title: title,
+			id: id,
+			studyTime: formattedDate,
+			unit:"党总支"
+	      }
+		}
 
+		this.$store.commit('readRecords',this.readRecord);
+
+		
 
       this.showFlag = false;
       this.addOrUpdateFlag = true;

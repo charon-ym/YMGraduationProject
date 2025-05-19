@@ -4,9 +4,10 @@ import App from '@/App.vue'
 import ElementUI from 'element-ui'
 import '@/assets/css/element-variables.scss'
 import '@/assets/css/style.scss'
+import store from '@/store/index.js'
 // 加载路由
 // import router from '@/router/router-static.js';
-import router from '@/router/router-static.js';
+import router from '@/router/router-static.js'
 // 面包屑导航，注册为全局组件
 import BreadCrumbs from '@/components/common/BreadCrumbs'
 // 引入echart
@@ -76,5 +77,7 @@ Vue.component('downloadExcel', JsonExcel)
 Vue.prototype.$md5 = md5;
 new Vue({
   render: h => h(App),
-  router
+  store,
+  router,
+   
 }).$mount('#app')

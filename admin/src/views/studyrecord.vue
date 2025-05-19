@@ -37,9 +37,10 @@
 export default {
   data() {
     return {
+      role: "",
       records: [
         {
-          name: "学生",
+          name: "学生姓名1",
           account: "学生账号1",
           type: "学生",
           title: "文章标题",
@@ -49,11 +50,14 @@ export default {
         },
       ], // 存放缴费记录列表
       ruleForm: {},
+      allreadRecords: [],
+      readRecords: [],
     };
   },
   mounted() {
     var table2 = this.$storage.get("sessionTable");
-    console.log(table2);
+    this.role = this.$storage.get("role");
+
     this.flag = table2;
     this.$http({
       url: `${this.$storage.get("sessionTable")}/session`,
@@ -70,6 +74,22 @@ export default {
   methods: {
     loadRecords() {
       console.log(this.ruleForm);
+      this.allreadRecords = this.$store.state.readRecords;
+      console.log(this.allreadRecords);
+      // 获取当前用户相关记录
+      if (this.role == "学生") {
+        this.records = this.allreadRecords.filter((record) =>{
+          return record.account == this.ruleForm.xueshengzhanghao;
+        })
+      }
+      else if (this.role == "教工") {
+        this.records = this.allreadRecords.filter((record) =>{
+          return record.account == this.ruleForm.jiaogongzhanghao;
+        })
+      }
+      else if (this.role == "管理员"||this.role == "二级学院") {
+        this.records = this.allreadRecords;
+      }
       // 这里假设从 paytable 表中获取所有记录
       //   let table = this.$storage.get("paytable") || "paytable"; // 默认值，防止为空
       //   console.log(table);
