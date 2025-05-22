@@ -36,7 +36,7 @@ const routes = [{
   component: Index,
   children: [{
     // 这里不设置值，是把main作为默认页面
-    path: '/home',
+    path: '/',
     name: '系统首页',
     component: Home,
     meta: { icon: '', title: 'center' }

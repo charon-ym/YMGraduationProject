@@ -77,8 +77,6 @@
       methods: {
          // 调用 mutation
         increment() {
-          console.log("vuex的使用：");
-          console.log("vuex的使用：",this.$store.state.count);
           this.$store.commit("increment");
         },
         renderCharts() {

@@ -28,10 +28,6 @@
         src="http://codegen.caihongy.cn/20201114/7856ba26477849ea828f481fa2773a95.jpg"
         fit="cover"
       ></el-image>
-      <!-- <el-menu-item index="0" @click="menuHandler('')">
-			<i v-if='true' :style='{"verticalAlign":"middle","margin":"0 3px","color":"inherit","textAlign":"center","display":"none","width":"34px","fontSize":"18px"}' class="el-icon-menu el-icon-s-home" />
-			<span :style='{"color":"inherit","verticalAlign":"middle","fontSize":"14px"}'>系统首页</span>
-		  </el-menu-item> -->
 
       <el-submenu
         :popper-append-to-body="false"
@@ -174,41 +170,10 @@
           >{{ child.menu }}</el-menu-item
         >
       </el-submenu>
-      <!-- <el-submenu
-        v-if="role === '二级学院' || role === '管理员'"
-        :popper-append-to-body="false"
-        index="0"
-        @click.native="readRecord()"
-      >
-        <template slot="title">
-          <i
-            v-if="true"
-            :style="{
-              verticalAlign: 'middle',
-              margin: '0 3px',
-              color: 'inherit',
-              textAlign: 'center',
-              display: 'none',
-              width: '34px',
-              fontSize: '18px',
-            }"
-            class="el-icon-menu el-icon-s-home"
-          />
-          <span
-            :style="{
-              color: 'inherit',
-              verticalAlign: 'middle',
-              fontSize: '14px',
-            }"
-            >学习记录</span
-          >
-        </template>
-      </el-submenu> -->
-       <!-- 交党费模块 -->
       <el-submenu
         
         :popper-append-to-body="false"
-        index="0"
+        index="7"
       >
         <template slot="title">
           <i

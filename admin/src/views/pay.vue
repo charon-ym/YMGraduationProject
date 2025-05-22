@@ -5,16 +5,6 @@
       type="success"
       :closable="false"
     ></el-alert>
-    <!-- <div class="top-content">
-      <span>收款人</span>
-      <el-input style="width:300px" v-model="name" placeholder="收款人"></el-input>
-      <span style="margin-left:20px">收款账号</span>
-      <el-input style="width:300px" v-model="account" placeholder="收款账号"></el-input>
-    </div> -->
-    <!-- <div class="price-content">
-      <span>金额</span>
-      <span>￥99.0</span>
-    </div> -->
     <div class="pay-type-content">
       <div class="pay-type-item">
         <el-radio v-model="type" label="微信支付"></el-radio>
@@ -79,10 +69,6 @@ export default {
         count() {
           return this.$store.state.count
         },
-    // 获取payRecords
-        // payRecords() {
-        //   return this.$store.state.payRecords
-        // },
         
   },
   mounted() {
@@ -98,6 +84,17 @@ export default {
 
     var table2 = this.$storage.get("sessionTable");
     this.flag = table2;
+    this.$http({
+      url: `${this.$storage.get("sessionTable")}/session`,
+      method: "get",
+    }).then(({ data }) => {
+      if (data && data.code === 0) {
+        this.ruleForm = data.data;
+  
+      } else {
+        this.$message.error(data.msg);
+      }
+    });
     
   },
   methods: {
@@ -129,8 +126,9 @@ export default {
         minute: '2-digit',
         hour12: false // 24小时制
       }).replace(/\//g, '-').replace(/,/, '');
-
+      console.log("当前用户数据",this.ruleForm);
       if(this.role === '学生'){
+        console.log("学生是对的嘛");
           this.payForm = {
           name: this.ruleForm.xueshengxingming,
           account: this.ruleForm.xueshengzhanghao,
