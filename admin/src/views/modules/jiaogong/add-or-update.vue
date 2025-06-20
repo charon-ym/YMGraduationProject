@@ -7,7 +7,7 @@
 			:model="ruleForm"
 			:rules="rules"
 			label-width="150px"
-		>
+		> 
 			<template >
 				<el-form-item :style='{"padding":"10px 20px","boxShadow":"0px 16px 6px -9px #d2b3aa","margin":"0 0 40px 0","borderColor":"#f7e2dc","borderRadius":"30px","background":"linear-gradient(120deg, rgba(255,255,255,1) 0%, rgba(255,245,242,1) 100%)","borderWidth":"1px","display":"block","width":"48%","minWidth":"500px","borderStyle":"solid"}' class="input" v-if="type!='info'"  label="教工账号" prop="jiaogongzhanghao">
 					<el-input v-model="ruleForm.jiaogongzhanghao" placeholder="教工账号" clearable  :readonly="ro.jiaogongzhanghao"></el-input>

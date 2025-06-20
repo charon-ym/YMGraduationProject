@@ -531,7 +531,7 @@ export default {
         properties: [
 	  {
 		field: 'shenqingbianhao',
-		displayName: '申请编号',
+		displayName: '申请编号', 
 		columnSize: 1
 	  },
 	  {

@@ -166,7 +166,7 @@ export default {
             xueshengxingbieOptions: [],
             jiaogongxingbieOptions: [],
             erjixueyuanxingbieOptions: [],
-		};
+		};  
 	},
 	mounted(){
         this.pageFlag = this.$storage.get("pageFlag");
